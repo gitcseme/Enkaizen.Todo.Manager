@@ -1,0 +1,32 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31112.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Applications", "Applications", "{E144A26D-4CF3-4178-808A-231BDBAD8147}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Libraries", "Libraries", "{68E3D6B0-E20C-4A2B-B986-2A654DBC33F4}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Enkaizen.Todo.Web", "Applications\Enkaizen.Todo.Web\Enkaizen.Todo.Web.csproj", "{167C3B84-54EB-4972-9A28-25D2B9513288}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{167C3B84-54EB-4972-9A28-25D2B9513288}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{167C3B84-54EB-4972-9A28-25D2B9513288}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{167C3B84-54EB-4972-9A28-25D2B9513288}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{167C3B84-54EB-4972-9A28-25D2B9513288}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{167C3B84-54EB-4972-9A28-25D2B9513288} = {E144A26D-4CF3-4178-808A-231BDBAD8147}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8B30AC12-15F5-4242-9316-A5BEC4202641}
+	EndGlobalSection
+EndGlobal
