@@ -13,8 +13,8 @@ namespace Enkaizen.Todo.Data.Entities
 
         public bool IsDone { get; set; }
 
-        public Guid CreatorId { get; set; }
+        public DateTime CreationDate { get; set; }
 
-        public Guid ModifierId { get; set; }
+        public Guid CreatorId { get; set; }
     }
 }

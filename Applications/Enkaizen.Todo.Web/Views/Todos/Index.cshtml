@@ -1,0 +1,24 @@
+﻿@model Enkaizen.Todo.Web.Models.TodoModels.TodoIndexModel
+
+<div class="row">
+    <div class="col-md-8 offset-2" id="todo-container">
+        @for (int i = 0; i < Model.Todos.Count(); ++i)
+        {
+            <div class="row no-gutters" id="single-todo">
+                <div class="col-md-10">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">
+                                @Html.CheckBoxFor(m => m.Todos[i].IsDone)
+                            </div>
+                        </div>
+                        <input type="text" class="form-control" aria-label="Text input with checkbox" value="@Model.Todos[i].Description" disabled>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <button style="border: 1px solid darkgray;" class="btn"><i class="text-danger fas fa-trash-alt"></i></button>
+                </div>
+            </div>
+        }
+    </div>
+</div>
