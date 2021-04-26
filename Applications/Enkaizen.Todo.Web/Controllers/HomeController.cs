@@ -22,19 +22,9 @@ namespace Enkaizen.Todo.Web.Controllers
             _todoService = todoService;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            //var userId = Guid.NewGuid();
-
-            //var todo = new TodoTask
-            //{
-            //    CreatorId = userId,
-            //    ModifierId = userId,
-            //    Description = "This is a test",
-            //    IsDone = false
-            //};
-
-            //await _todoService.CreateAsync(todo);
+            
 
             return View();
         }

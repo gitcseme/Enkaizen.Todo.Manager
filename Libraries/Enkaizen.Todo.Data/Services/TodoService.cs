@@ -49,9 +49,14 @@ namespace Enkaizen.Todo.Data.Services
             return await _todoUnitOfWork.TodoRepository.GetAsync(Id);
         }
 
-        public async Task<IEnumerable<TodoTask>> TodoTasks()
+        public async Task<IEnumerable<TodoTask>> GetAllPaginatedTodosAsync(int pageIndex = 1, int pageSize = 10, bool isTrackingOff = true)
         {
-            return await _todoUnitOfWork.TodoRepository.GetAllAsync();
+            return await _todoUnitOfWork.TodoRepository.GetAllPaginatedTodosAsync(pageIndex, pageSize, isTrackingOff);
+        }
+
+        public async Task<int> GetCountAsync()
+        {
+            return await _todoUnitOfWork.TodoRepository.GetCountAsync();
         }
     }
 }
