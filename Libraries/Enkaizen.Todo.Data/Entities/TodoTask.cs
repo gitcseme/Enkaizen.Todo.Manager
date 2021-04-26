@@ -8,7 +8,7 @@ namespace Enkaizen.Todo.Data.Entities
 {
     public class TodoTask : EntityBase<Guid>
     {
-        [StringLength(100)]
+        [StringLength(100), Required]
         public string Description { get; set; }
 
         public bool IsDone { get; set; }

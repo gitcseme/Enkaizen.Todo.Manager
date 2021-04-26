@@ -1,3 +1,8 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Enkaizen.Todo.Data;
+using Enkaizen.Todo.Data.Contexts;
+using Enkaizen.Todo.Data.Seeds;
 using Enkaizen.Todo.Web.Data;
 using Enkaizen.Todo.Web.Models;
 using Microsoft.AspNetCore.Builder;
@@ -21,28 +26,44 @@ namespace Enkaizen.Todo.Web
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            connectionString = Configuration.GetConnectionString(connectionStringName);
+            migrationAssemblyName = typeof(Startup).Assembly.FullName;
         }
 
+        public string connectionStringName = "DefaultConnection";
+        public string connectionString;
+        public string migrationAssemblyName;
+
         public IConfiguration Configuration { get; }
+
+        public ILifetimeScope AutofacContainer { get; private set; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(
-                    Configuration.GetConnectionString("DefaultConnection")));
+                options.UseSqlServer(connectionString));
             services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
-
+            services.AddDbContext<TodoContext>(options =>
+                options.UseSqlServer(connectionString, b => b.MigrationsAssembly(migrationAssemblyName))
+            );
 
             services.AddControllersWithViews();
             services.AddRazorPages();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void ConfigureContainer(ContainerBuilder builder)
         {
+            builder.RegisterModule(new TodoDataModule(connectionString, migrationAssemblyName));
+        }
+
+        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, TodoDataSeed todoDataSeed)
+        {
+            AutofacContainer = app.ApplicationServices.GetAutofacRoot();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -69,6 +90,9 @@ namespace Enkaizen.Todo.Web
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
             });
+
+            // Migration automation and seeding data
+            todoDataSeed.MigrateAsync().Wait();
         }
     }
 }
