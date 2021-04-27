@@ -6,6 +6,7 @@
 * The app has 3 users **one admin and two normal users** you can also create new by registration.
 * To see the credential please have a look at the **Enkaizen.Todo.Web.Seeds.ApplicationDataSeed** class
 * Create some TodoTask to see full operations.
+* paging is applied, use browser query string parameter request to check.
 
 ## Used technologies
 * ASP.NET Core 3.1
