@@ -28,6 +28,12 @@ namespace Enkaizen.Todo.Data.Services
             await _todoUnitOfWork.SaveAsync();
         }
 
+        public async Task DeleteAsync(Guid Id)
+        {
+            await _todoUnitOfWork.TodoRepository.RemoveAsync(Id);
+            await _todoUnitOfWork.SaveAsync();
+        }
+
         public void Dispose()
         {
             _todoUnitOfWork.Dispose();

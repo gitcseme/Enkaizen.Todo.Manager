@@ -11,5 +11,6 @@ namespace Enkaizen.Todo.Data.Services
     {
         Task<IEnumerable<TodoTask>> GetAllPaginatedTodosAsync(int pageIndex = 1, int pageSize = 10, bool isTrackingOff = true);
         Task<int> GetCountAsync();
+        Task DeleteAsync(Guid Id);
     }
 }

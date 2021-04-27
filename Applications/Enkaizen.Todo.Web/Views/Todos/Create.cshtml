@@ -1,0 +1,21 @@
+﻿@model Enkaizen.Todo.Web.Models.TodoModels.TodoCreateViewModel
+
+@{ 
+    ViewData["Title"] = "Create Todo";
+}
+
+<div class="row">
+    <div class="col-md-8 offset-2">
+        <form method="post" action="/Todos/Create">
+            <div class="form-group">
+                @Html.LabelFor(m => m.Description, new { @style = "font-weight: 600; font-size: 20px" })
+                <div class="description-field mt-3">
+                    @Html.TextBoxFor(m => m.Description, new { @class = "form-control", @placeholder = "describe your todo", required = "required" })
+                </div>
+                <div class="form-group mt-3">
+                    <button type="submit" class="btn btn-success">Crate Todo</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
