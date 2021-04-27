@@ -1,6 +1,8 @@
-﻿using Enkaizen.Todo.Data.Services;
+﻿using Enkaizen.Todo.Data.Entities;
+using Enkaizen.Todo.Data.Services;
 using Enkaizen.Todo.Web.Models;
 using Enkaizen.Todo.Web.Models.TodoModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -10,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace Enkaizen.Todo.Web.Controllers
 {
+    [Authorize]
     public class TodosController : Controller
     {
         public TodosController(ITodoService todoService, UserManager<ApplicationUser> userManager)
@@ -37,6 +40,44 @@ namespace Enkaizen.Todo.Web.Controllers
             var model = new TodoIndexModel(todoViewModels, pageIndex, pageSize, totalTodos);
 
             return View(model);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public IActionResult Create()
+        {
+
+            return View();
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Create(TodoCreateViewModel model)
+        {
+            var loggedInUser = await _userManager.GetUserAsync(HttpContext.User);
+
+            if (ModelState.IsValid)
+            {
+                var newTodo = new TodoTask
+                {
+                    Description = model.Description,
+                    IsDone = false,
+                    CreationDate = DateTime.Now,
+                    CreatorId = new Guid(loggedInUser.Id)
+                };
+
+                await _todoService.CreateAsync(newTodo);
+                return RedirectToAction("Index");
+            }
+
+            return View(model);
+        }
+
+        public async Task<IActionResult> Delete(string todoId)
+        {
+            await _todoService.DeleteAsync(new Guid(todoId));
+
+            return RedirectToAction("Index");
         }
     }
 }
