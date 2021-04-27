@@ -62,7 +62,8 @@ namespace Enkaizen.Todo.Web.Seeds
             }
             catch (Exception ex)
             {
-                // EXPECTED Exception no need to catch or worry.
+                // EXPECTED Exception about collision with existing data.
+                // No need to handle or worry.
             }
         }
     }

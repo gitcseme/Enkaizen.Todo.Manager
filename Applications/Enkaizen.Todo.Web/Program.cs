@@ -30,7 +30,6 @@ namespace Enkaizen.Todo.Web
             }
             catch (Exception ex)
             {
-
                 Log.Fatal(ex, "Application failed to start correctly");
             }
             finally
