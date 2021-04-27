@@ -2,10 +2,8 @@
 using Enkaizen.Todo.Web.Data;
 using Enkaizen.Todo.Web.Models;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Serilog;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Enkaizen.Todo.Web.Seeds
@@ -38,6 +36,8 @@ namespace Enkaizen.Todo.Web.Seeds
 
         public async override Task SeedAsync()
         {
+            Log.Information("Application is seeding...");
+
             try
             {
                 var result = await _userManager.CreateAsync(adminUser, "Admin$2021");
@@ -57,7 +57,7 @@ namespace Enkaizen.Todo.Web.Seeds
                 result = await _userManager.CreateAsync(regularUser2, "Shuvo$2021");
                 if (result.Succeeded)
                 {
-                    await _userManager.AddToRoleAsync(regularUser1, regularRole.Name);
+                    await _userManager.AddToRoleAsync(regularUser2, regularRole.Name);
                 }
             }
             catch (Exception ex)
