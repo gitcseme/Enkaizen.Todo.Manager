@@ -5,6 +5,7 @@ using Enkaizen.Todo.Web.Models.TodoModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,8 +27,17 @@ namespace Enkaizen.Todo.Web.Controllers
 
         public async Task<IActionResult> Index(int pageIndex = 1, int pageSize = 10)
         {
-            var todos = await _todoService.GetAllPaginatedTodosAsync(pageIndex, pageSize);
-            int totalTodos = await _todoService.GetCountAsync();
+            IEnumerable<TodoTask> todos = null;
+            int totalTodos = 0;
+            try
+            {
+                todos = await _todoService.GetAllPaginatedTodosAsync(pageIndex, pageSize);
+                totalTodos = await _todoService.GetCountAsync();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error retrieving TodoTaks");
+            }
 
             var todoViewModels = todos.Select(td => new TodoViewModel
             {
@@ -46,7 +56,6 @@ namespace Enkaizen.Todo.Web.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
-
             return View();
         }
 
@@ -66,7 +75,15 @@ namespace Enkaizen.Todo.Web.Controllers
                     CreatorId = new Guid(loggedInUser.Id)
                 };
 
-                await _todoService.CreateAsync(newTodo);
+                try 
+                {
+                    await _todoService.CreateAsync(newTodo);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error(ex, "Error creating new TodoTask");
+                }
+                
                 return RedirectToAction("Index");
             }
 
@@ -77,7 +94,14 @@ namespace Enkaizen.Todo.Web.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string todoId)
         {
-            await _todoService.DeleteAsync(new Guid(todoId));
+            try
+            {
+                await _todoService.DeleteAsync(new Guid(todoId));
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error deleting TodoTask");
+            }
 
             return RedirectToAction("Index");
         }
@@ -85,13 +109,19 @@ namespace Enkaizen.Todo.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> MarkDone(string todoId)
         {
-            var todo = await _todoService.GetAsync(new Guid(todoId));
-            todo.IsDone = true;
-            await _todoService.EditAsync(todo);
+            try
+            {
+                var todo = await _todoService.GetAsync(new Guid(todoId));
+                todo.IsDone = true;
+                await _todoService.EditAsync(todo);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, "Error updating TodoTask");
+            }
 
             return RedirectToAction("Index");
         }
 
-        
     }
 }
