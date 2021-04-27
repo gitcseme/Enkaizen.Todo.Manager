@@ -73,11 +73,25 @@ namespace Enkaizen.Todo.Web.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete(string todoId)
         {
             await _todoService.DeleteAsync(new Guid(todoId));
 
             return RedirectToAction("Index");
         }
+
+        [HttpPost]
+        public async Task<IActionResult> MarkDone(string todoId)
+        {
+            var todo = await _todoService.GetAsync(new Guid(todoId));
+            todo.IsDone = true;
+            await _todoService.EditAsync(todo);
+
+            return RedirectToAction("Index");
+        }
+
+        
     }
 }

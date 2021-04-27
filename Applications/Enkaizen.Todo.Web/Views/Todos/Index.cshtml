@@ -30,10 +30,31 @@
                     <div class="input-group mb-3">
                         <div class="input-group-prepend">
                             <div class="input-group-text">
-                                @Html.CheckBoxFor(m => m.Todos[i].IsDone)
+                                @if (Model.Todos[i].IsDone) {
+                                    @Html.CheckBoxFor(m => m.Todos[i].IsDone,
+                                    new
+                                         {
+                                        @class = "mark-done",
+                                        onClick = string.Format("MarkDone(this, '{0}')", Model.Todos[i].Id),
+                                        @disabled = "disabled"
+                                    })
+                                }
+                                else {
+                                    @Html.CheckBoxFor(m => m.Todos[i].IsDone,
+                                    new
+                                         {
+                                        @class = "mark-done",
+                                        onClick = string.Format("MarkDone(this, '{0}')", Model.Todos[i].Id),
+                                    })
+                                }
                             </div>
                         </div>
-                        <input type="text" class="form-control" aria-label="Text input with checkbox" value="@Model.Todos[i].Description" disabled>
+                        @if (Model.Todos[i].IsDone) {
+                            <input type="text" class="form-control text-muted" aria-label="Text input with checkbox" value="@Model.Todos[i].Description" disabled>
+                        }
+                        else {
+                            <input type="text" class="form-control text-info" aria-label="Text input with checkbox" value="@Model.Todos[i].Description" disabled>
+                        }
                     </div>
                 </div>
                 @{
@@ -54,6 +75,25 @@
 
 @section Scripts {
 
-        <script type="text/javascript" src="~/js/todoIndex.js"></script>
+    <script type="text/javascript" src="~/js/todoIndex.js"></script>
 
+    <script type="text/javascript">
+
+        function MarkDone(checkBox, todoId) {
+            $.ajax({
+                url: '/Todos/MarkDone',
+                type: 'POST',
+                dataType: 'text',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                data: { todoId: todoId },
+                success: function (response) {
+                    $(checkBox).attr('disabled', 'disabled')
+                },
+                error: function (data, status, xhr) {
+                    console.log(status);
+                }
+            })
+        }
+
+    </script>
 }
