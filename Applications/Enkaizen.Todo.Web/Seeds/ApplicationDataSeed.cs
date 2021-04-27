@@ -21,10 +21,10 @@ namespace Enkaizen.Todo.Web.Seeds
             _userManager = userManager;
             _roleManager = roleManager;
 
-            adminUser = new ApplicationUser { Email = "admin@gmail.com", UserName = "shuvo" };
+            adminUser = new ApplicationUser { Email = "admin2021@gmail.com", UserName = "admin2021@gmail.com" };
 
-            regularUser1 = new ApplicationUser { Email = "regular1@gmail.com", UserName = "arif" };
-            regularUser2 = new ApplicationUser { Email = "regular2@gmail.com", UserName = "mahin" };
+            regularUser1 = new ApplicationUser { Email = "regular2020@gmail.com", UserName = "regular2020@gmail.com" };
+            regularUser2 = new ApplicationUser { Email = "regular2021@gmail.com", UserName = "regular2021@gmail.com" };
 
             adminRole = new IdentityRole("Admin");
             regularRole = new IdentityRole("Regular");
